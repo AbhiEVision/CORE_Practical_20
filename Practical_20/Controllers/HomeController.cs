@@ -18,7 +18,7 @@ namespace Practical_20.Controllers
 
         public IActionResult BadRequestEx()
         {
-            return BadRequest();
+            return StatusCode(400);
         }
 
         public IActionResult UnAuthorizeError()
@@ -28,7 +28,7 @@ namespace Practical_20.Controllers
 
         public IActionResult NotFoundExample()
         {
-            return NotFound();
+            return StatusCode(404);
         }
 
         public IActionResult AmbiguityExample()
