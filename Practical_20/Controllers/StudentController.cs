@@ -9,15 +9,19 @@ namespace Practical_20.Controllers
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IRepository<Student> _repository;
+		private readonly ILogger<StudentController> _logger;
 
-		public StudentController(IUnitOfWork unitOfWork)
+		public StudentController(IUnitOfWork unitOfWork, ILogger<StudentController> logger)
 		{
 			_unitOfWork = unitOfWork;
+			
 			_repository = _unitOfWork.GetRepository<Student>();
+			_logger = logger;
 		}
 
 		public async Task<IActionResult> Index()
 		{
+			_logger.LogInformation("List of Students!");
 			return _repository.GetAll() != null ?
 						View(_repository.GetAll().ToList()) :
 						Problem("Entity set 'DatabaseContext.Students'  is null.");
@@ -27,15 +31,17 @@ namespace Practical_20.Controllers
 		{
 			if (id == null || _repository.GetAll() == null)
 			{
+				_logger.LogError("Student Data not found");
 				return NotFound();
 			}
 
 			var student = _repository.GetById(id ?? 0);
 			if (student == null)
 			{
+				_logger.LogError("Student Data not found");
 				return NotFound();
 			}
-
+			_logger.LogInformation($"Student Detail Show {student.Id}");
 			return View(student);
 		}
 
@@ -50,10 +56,12 @@ namespace Practical_20.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				_logger.LogInformation("Student Added!");
 				_repository.Insert(student);
 				await _unitOfWork.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+			_logger.LogWarning("Studnet Data is not valid!");
 			return View(student);
 		}
 
@@ -61,6 +69,7 @@ namespace Practical_20.Controllers
 		{
 			if (id == null || _repository.GetAll() == null)
 			{
+				_logger.LogCritical("Requested Data is not in database!");
 				return NotFound();
 			}
 
@@ -69,6 +78,7 @@ namespace Practical_20.Controllers
 			{
 				return NotFound();
 			}
+
 			return View(student);
 		}
 
@@ -85,6 +95,7 @@ namespace Practical_20.Controllers
 			{
 				try
 				{
+					_logger.LogInformation($"{student.Name}'s data has been Updated!");
 					_repository.Update(student);
 					await _unitOfWork.SaveChangesAsync();
 				}
@@ -115,6 +126,8 @@ namespace Practical_20.Controllers
 
 			if (student == null)
 			{
+				_logger.LogCritical("Requested Data is not in database!");
+
 				return NotFound();
 			}
 
@@ -133,6 +146,8 @@ namespace Practical_20.Controllers
 			if (student != null)
 			{
 				_repository.Delete(student);
+				_logger.LogCritical("Requested Data is not in database!");
+
 			}
 
 			await _unitOfWork.SaveChangesAsync();
