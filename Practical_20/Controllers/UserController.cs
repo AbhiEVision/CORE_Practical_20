@@ -9,15 +9,20 @@ namespace Practical_20.Controllers
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IRepository<User> _repository;
+		private readonly ILogger<UserController> _logger;
 
-		public UserController(IUnitOfWork unitOfWork)
+
+		public UserController(IUnitOfWork unitOfWork, ILogger<UserController> logger)
 		{
 			_unitOfWork = unitOfWork;
+			_logger = logger;
 			_repository = _unitOfWork.GetRepository<User>();
 		}
 
 		public async Task<IActionResult> Index()
 		{
+
+			_logger.LogInformation("User Data!");
 			return _repository.GetAll() != null ?
 						View(_repository.GetAll().ToList()) :
 						Problem("Entity set 'DatabaseContext.Users'  is null.");
@@ -36,6 +41,8 @@ namespace Practical_20.Controllers
 				return NotFound();
 			}
 
+			_logger.LogInformation("Student data information requested!");
+
 			return View(user);
 		}
 
@@ -52,6 +59,7 @@ namespace Practical_20.Controllers
 			{
 				_repository.Insert(user);
 				await _unitOfWork.SaveChangesAsync();
+				_logger.LogInformation("User created!");
 
 				return RedirectToAction(nameof(Index));
 			}
@@ -87,6 +95,7 @@ namespace Practical_20.Controllers
 				try
 				{
 					_repository.Update(user);
+					_logger.LogInformation("User data edited!");
 					await _unitOfWork.SaveChangesAsync();
 
 				}
@@ -138,6 +147,8 @@ namespace Practical_20.Controllers
 			}
 
 			await _unitOfWork.SaveChangesAsync();
+			_logger.LogInformation("User deleted!");
+
 			return RedirectToAction(nameof(Index));
 		}
 
