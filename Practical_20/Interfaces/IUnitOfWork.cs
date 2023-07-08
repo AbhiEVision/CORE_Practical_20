@@ -4,6 +4,6 @@
 	{
 		IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
 
-		void SaveChanges();
+		Task SaveChangesAsync();
 	}
 }

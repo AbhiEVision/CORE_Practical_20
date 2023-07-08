@@ -51,7 +51,7 @@ namespace Practical_20.Controllers
 			if (ModelState.IsValid)
 			{
 				_repository.Insert(student);
-				_unitOfWork.SaveChanges();
+				await _unitOfWork.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
 			return View(student);
@@ -86,7 +86,7 @@ namespace Practical_20.Controllers
 				try
 				{
 					_repository.Update(student);
-					_unitOfWork.SaveChanges();
+					await _unitOfWork.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -135,7 +135,7 @@ namespace Practical_20.Controllers
 				_repository.Delete(student);
 			}
 
-			_unitOfWork.SaveChanges();
+			await _unitOfWork.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 

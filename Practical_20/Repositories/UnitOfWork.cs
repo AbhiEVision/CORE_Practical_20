@@ -28,9 +28,9 @@ namespace Practical_20.UnitOfWork
 			return repository;
 		}
 
-		public void SaveChanges()
+		public async Task SaveChangesAsync()
 		{
-			_context.SaveChanges();
+			await _context.SaveChangesAsync();
 		}
 
 		public void Dispose()

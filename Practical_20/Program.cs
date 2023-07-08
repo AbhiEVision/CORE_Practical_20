@@ -20,7 +20,9 @@ namespace Practical_20
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
-            var app = builder.Build();
+            builder.Services.AddHttpContextAccessor();
+
+			var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
             {

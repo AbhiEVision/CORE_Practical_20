@@ -1,6 +1,8 @@
-﻿namespace Practical_20.Models
+﻿using Practical_20.Interfaces;
+
+namespace Practical_20.Models
 {
-	public class Student
+	public class Student : IAuditable
 	{
 		public int Id { get; set; }
 
