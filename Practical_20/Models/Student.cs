@@ -1,4 +1,5 @@
 ﻿using Practical_20.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Practical_20.Models
 {
@@ -8,6 +9,7 @@ namespace Practical_20.Models
 
 		public string Name { get; set; }
 
+		[EmailAddress]
 		public string Email { get; set; }
 
 	}

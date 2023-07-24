@@ -23,6 +23,7 @@ namespace Practical_20.UnitOfWork
 				return (IRepository<TEntity>)_repositories[typeof(TEntity)];
 			}
 
+
 			var repository = new Repository<TEntity>(_context);
 			_repositories.Add(typeof(TEntity), repository);
 			return repository;
